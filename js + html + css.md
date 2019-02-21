@@ -127,5 +127,142 @@
 >
 >  3. 
 >
->* 
+>* 对象相关
+>
+>  1. Object.defineProperty()
+>
+>     > ```js
+>     > 
+>     > Object.defineProperty(obj, prop, descriptor);
+>     > // obj：必需。目标对象 
+>     > // prop：必需。需定义或修改的属性的名字
+>     > // descriptor：必需。目标属性所拥有的特性,具体属性如下
+>     > {
+>     >     configurable: true | false, //目标属性是否可以被删除或是否可以再次修改特性
+>     >     enumerable: true | false, //目标属性是否可以被枚举。true | false
+>     >     value: 任意类型的值, //设置属性的值
+>     >     writable: true | false, //值是否可以重写。true | false
+>     >     get:function (){
+>     >         //当获取值的时候触发的函数
+>     >         return initValue;    
+>     >     },
+>     >     set:function (value){
+>     >         //当设置值的时候触发的函数,设置的新值通过参数value拿到
+>     >         initValue = value;
+>     >     }
+>     > }
+>     > // 注意：当使用了getter或setter方法，不允许使用writable和value这两个属性
+>     > ```
+>
+>  2. 
+>
+>* 数组相关
+>
+>  1. 扩展运算符的用法
+>
+>     ```js
+>     // 复制数组
+>     // 方法1
+>     const a1 = [1, 2];
+>     const a2 = a1.concat();
+>     a2[0] = 2;
+>     a1 // [1, 2]
+>     // 方法2
+>     const a1 = [1,2];
+>     const a2 = [...a1];
+>     // 方法3
+>     const [...a2] = a1;
+>     
+>     ```
+>
+>  2. 浅拷贝和深拷贝
+>
+>     ``` js
+>     // 浅拷贝
+>     // 方式1
+>     let a = [1, 2];
+>     let b = a;
+>     // 方式2
+>     Object.assign({}, { a: { b :1} });
+>     // 方式3
+>     [].concat(arr1, arr2);
+>     // 方式4
+>     [...arr1, ...arr2, ...arr3]
+>     
+>     // 深拷贝
+>     // 方式1
+>     Object.assign({}, { a: 1 });
+>     // 方式2
+>     JSON.parse(JSON.stringfy(obj))
+>     // 方式3 
+>     var _ = require('lodash');
+>     let obj = _.cloneDeep(obj1);
+>     // 方式4
+>     var $ = require('jquery');
+>     var obj = $.extend(true, {}, obj)
+>     
+>     ```
+>
+>  3. 对空位的处理
+>
+>     ``` js
+>     // es5
+>     // forEach方法
+>     [,'a'].forEach((x,i) => console.log(i)); // 1
+>     
+>     // filter方法
+>     ['a',,'b'].filter(x => true) // ['a','b']
+>     
+>     // every方法
+>     [,'a'].every(x => x==='a') // true
+>     
+>     // reduce方法
+>     [1,,2].reduce((x,y) => x+y) // 3
+>     
+>     // some方法
+>     [,'a'].some(x => x !== 'a') // false
+>     
+>     // map方法
+>     [,'a'].map(x => 1) // [,1]
+>     
+>     // join方法
+>     [,'a',undefined,null].join('#') // "#a##"
+>     
+>     // toString方法
+>     [,'a',undefined,null].toString() // ",a,,"
+>     
+>     // es6
+>     Array.from(['a',,'b'])
+>     // [ "a", undefined, "b" ]
+>     [...['a',,'b']]
+>     // [ "a", undefined, "b" ]
+>     [,'a','b',,].copyWithin(2,0) 
+>     // [,"a",,"a"]
+>     new Array(3).fill('a') 
+>     // ["a","a","a"]
+>     let arr = [, ,];
+>     for (let i of arr) {
+>       console.log(1);
+>     }
+>     // 1
+>     // 1
+>     // entries()
+>     [...[,'a'].entries()] // [[0,undefined], [1,"a"]]
+>     
+>     // keys()
+>     [...[,'a'].keys()] // [0,1]
+>     
+>     // values()
+>     [...[,'a'].values()] // [undefined,"a"]
+>     
+>     // find()
+>     [,'a'].find(x => true) // undefined
+>     
+>     // findIndex()
+>     [,'a'].findIndex(x => true) // 0
+>     ```
+>
+>  4. 
+>
+>* sd
 
