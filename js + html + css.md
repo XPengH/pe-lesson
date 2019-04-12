@@ -264,5 +264,110 @@
 >
 >  4. 
 >
->* sd
+>* 闭包
+>
+>* this指针
+>
+>  1. 直接函数调用，this指向window对象
+>
+>     ``` js
+>     var name='pepe'
+>     function sayName(name){
+>         console.log(this.name);
+>     }
+>     sayName(); // 'pepe'
+>     window.sayName(); // window.sayName() 等同于 sayName()
+>     console.log(this.name, window.name); // 'pepe', 'pepe'
+>     ```
+>
+>  2. 对象函数调用，this指向调用函数的对象本身
+>
+>     ``` js
+>     var name='pepe';
+>     function sayName(){
+>         console.log(this.name);
+>     }
+>     var obj={'name':'pepepeng'};
+>     obj.sayName=sayName; // 如果这里 obj.sayName = sayName(); 那么obj.sayName 为undefined
+>     obj.sayName(); // pepepeng
+>     sayName(); // pepe
+>     ```
+>
+>  3. 构造函数调用，this指向新创建的对象
+>
+>     ```js
+>     function fuckObj(name){
+>         this.name = name;
+>         console.log(this);      
+>         console.log(this.name);
+>     }
+>     var myObj=new fuckObj('pepe');
+>     
+>     function Dog(name){
+>         this.name=name;
+>         console.log(this.name);    //输出'泰迪'
+>         console.log(this);        //输出：Object { name: "泰迪" }
+>     }
+>     Dog.prototype.sayName=function sayName(){
+>     console.log("my name is "+this.name);
+>     }
+>     var animal= new Dog("泰迪");
+>     animal.sayName();       //输出：'my name is 泰迪'
+>     
+>     
+>     function Cat(){
+>         console.log(this);   //输出：Object {  }
+>         console.log("cat"); 
+>     }
+>     function Dog(name){
+>         this.name=name;
+>         console.log(this.name);
+>         console.log(this);    //输出：Object { name: "泰迪" }
+>         return new Cat();    //关键代码，在构造函数返回了一个对象
+>     }
+>     var animal=new Dog("泰迪");   //输出：Object {  }
+>     console.log(animal); // {} 最终animal是个空object
+>     ```
+>
+>  4. 间接函数调用，this指向要指向的对象(call(),apply(), bind())
+>
+>     ``` js
+>     // call(this指针要指向的对象，参数1，参数2,.....)
+>     function Cat(age,name){
+>         this.name='cat';
+>         console.log(this);
+>         console.log('cat: age:'+age+",name:"+name);
+>     }
+>     var cat = new Cat(4,'Bob');   //Cat {name: "cat"}和cat: age:4,name:Bob
+>     Cat.call(this,3,'Tom');     //this指向了Window和cat: age:3,name:Tom
+>     
+>     // apply(this指针要指向的对象,参数数组或arguments对象)
+>     // apply方法和call方法的作用相同，唯一不同的是call方法要将参数一一传入，而apply方法传入的是数组或者arguments对象。arguments对象包含了函数的所有参数。
+>     function Cat(age,name){
+>         this.name='cat';
+>         console.log(this);
+>         console.log('cat: age:'+age+",name:"+name);
+>     }
+>     var cat=new Cat(4,'Bob');    // Cat {name: "cat"}和cat: age:4,name:Bob
+>     Cat.apply(this,[3,'Tom']);   // this指向了Window和cat: age:3,name:Tom
+>     function getCat(age,name){
+>         Cat.apply(this, arguments);
+>     }
+>     getCat(5,"kitty");  // this指向了Window和cat: age:5,name:kitty
+>     
+>     // bind这个方法会创建一个函数的实例，其 this 值会被绑定到传给 bind()函数的值。
+>     window.color = "red";
+>     var o = { color: "blue" };
+>     function sayColor(){ 
+>         console.log(this.color);
+>     } 
+>     var objectSayColor = sayColor.bind(o); 
+>     objectSayColor(); // "blue"
+>     window.objectSayColor();   // "blue"
+>     
+>     ```
+>
+>  5. 
+>
+>* windows上input 和textarea的字体默认不一致如需统一需要单独设置
 
